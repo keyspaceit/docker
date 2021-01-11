@@ -1,12 +1,15 @@
-FROM node:12.18.1
-ENV NODE_ENV=production
+FROM python:3.6
 
+# Create app directory
 WORKDIR /app
 
-COPY ["package.json", "package-lock.json*", "./"]
+# Install app dependencies
+COPY python-docker/src/requirements.txt ./
 
-RUN npm install --production
+RUN pip install -r requirements.txt
 
-COPY . .
+# Bundle app source
+COPY python-docker/src /app
 
-CMD [ "node", "server.js" ]
+EXPOSE 8080
+CMD [ "python", "server.py" ]
